@@ -9,7 +9,22 @@ const jsonParser = jsonParse();
 const logger = require("morgan");
 
 app.use(logger('dev'));
-app.use(jsonParser);
+app.use(jsonParser); 
+
+let mongoose = require("mongoose");
+
+mongoose.connect("mongodb://localhost:27017/qa");
+
+let db = mongoose.connection;
+
+db.on('error', function(err){
+    console.error('connection error:', err);
+});
+
+db.once('open', function(){
+    console.log('db connection succesful');
+});
+
 app.use('/questions',routes);
 
 //catch 404 and forward to error handler
